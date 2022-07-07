@@ -26,6 +26,7 @@ import pandas as pd
 import openpyxl
 from zayed_university_app.models import Log
 from django.db.models import Count
+import pymssql
 
 
 def admin_check(user):
