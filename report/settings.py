@@ -88,27 +88,27 @@ WSGI_APPLICATION = 'report.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
-# DATABASES = {
-#    'default': {
-#        'ENGINE': 'django.db.backends.sqlite3',
-#        'NAME': BASE_DIR / 'db.sqlite3',
-#    }
-# }
+DATABASES = {
+   'default': {
+       'ENGINE': 'django.db.backends.sqlite3',
+       'NAME': BASE_DIR / 'db.sqlite3',
+   }
+}
 
 # for Server
-DATABASES = {
-    'default': {
-        'ENGINE': 'mssql',
-        'NAME': 'zu_chatbot_log_devel',
-        'USER': 'chatboat_sa',
-        'PASSWORD': 'ch@tb0@t$@',
-        'HOST': '192.168.5.79',
-        'PORT': '1433',
-        'OPTIONS': {
-            'driver': 'ODBC Driver 17 for SQL Server',
-        },
-    },
-}
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'mssql',
+#         'NAME': 'zu_chatbot_log_devel',
+#         'USER': 'chatboat_sa',
+#         'PASSWORD': 'ch@tb0@t$@',
+#         'HOST': '192.168.5.79',
+#         'PORT': '1433',
+#         'OPTIONS': {
+#             'driver': 'ODBC Driver 17 for SQL Server',
+#         },
+#     },
+# }
 
 
 # DATABASES = {

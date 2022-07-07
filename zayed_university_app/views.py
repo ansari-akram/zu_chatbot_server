@@ -213,11 +213,11 @@ def get_response_from_watson(request):
         print("assistant_id_eng")
 
     res = response.get_result()
-    print('RESPONSE ', res)
+    # print('RESPONSE ', res)
 
     try:
         res_conf = res['output']['intents'][0]['confidence']
-        print("-", res_conf)
+        print("CONF", res_conf)
     except:
         try:
             res_conf = res['output']['generic'][0]['primary_results'][0]['result_metadata']['confidence']
