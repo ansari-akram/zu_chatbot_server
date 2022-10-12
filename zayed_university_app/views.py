@@ -198,7 +198,7 @@ def get_response_from_watson(request):
           _data['spell_check_bool'], _data['spell_check_bool'] == True)
     if spell(text) != text and _data['spell_check_bool'] == True:
         uncorrect = spell(text)
-        if "university" in uncorrect:
+        if "university" in uncorrect.lower():
             u_list = uncorrect.split()
             uni_pos = u_list.index("university")
             print(u_list, uni_pos)
