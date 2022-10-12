@@ -194,8 +194,27 @@ def get_response_from_watson(request):
         text = ''
         session_id_ = ''
 
-    print('RIGHT SPELLING', spell(text), _data['spell_check_bool'], _data['spell_check_bool'] == True)
+    print('RIGHT SPELLING', spell(text),
+          _data['spell_check_bool'], _data['spell_check_bool'] == True)
     if spell(text) != text and _data['spell_check_bool'] == True:
+        uncorrect = spell(text)
+        if "university" in uncorrect:
+            u_list = uncorrect.split()
+            uni_pos = u_list.index("university")
+            print(u_list, uni_pos)
+            try:
+                if u_list[uni_pos-1] == "based":
+                    u_list[uni_pos-1] = "zayed"
+            except:
+                pass
+            print("----------", u_list)
+            res = ' '.join([str(elem) for elem in u_list])
+
+        if res != text:
+            return JsonResponse({'session_id': session_id_, 'answer': f'{res}', 'intent': 'spell'})
+
+        else:
+            text = res
         return JsonResponse({'session_id': session_id_, 'answer': f'{spell(text)}', 'intent': 'spell'})
 
     doc = nlp(text.upper())
@@ -232,7 +251,7 @@ def get_response_from_watson(request):
     else:
         intents = ""
         print("Empty Intent")
-        
+
         _text = text.lower()
         _text = text.lower().replace('zayed', '').replace('university', '')
 
@@ -245,7 +264,7 @@ def get_response_from_watson(request):
             for j in _stop_words:
                 if i.upper().strip() == j.upper().strip():
                     _text = _text.replace(i, "")
-        
+
         for i in _input_list:
             for j in _stop_words_ar:
                 if i.upper().strip() == j.upper().strip():
@@ -274,32 +293,39 @@ def get_response_from_watson(request):
                     all_xml = get_ratios(_main_input_list, sys_file, all_xml)
 
                     _main_input_string = list_to_str(_main_input_list)
-                    
+
                     links_ratio = []
                     for i in all_xml:
-                        links_ratio.append([i[0], string_similarity(i[1][0], _main_input_string), i[1][0], i[1][1]])
-                    
-                    df1 = pd.DataFrame(links_ratio, columns=['single_ratio', 'actual_ratio', 'name', 'path'])
+                        links_ratio.append([i[0], string_similarity(
+                            i[1][0], _main_input_string), i[1][0], i[1][1]])
+
+                    df1 = pd.DataFrame(links_ratio, columns=[
+                                       'single_ratio', 'actual_ratio', 'name', 'path'])
                     main_df = main_df.append(df1, ignore_index=True)
 
                 if data[0] == "json":
                     json_data = data[1]
 
                     all_json = []
-                    all_json = get_ratios(_main_input_list, json_data, all_json)
+                    all_json = get_ratios(
+                        _main_input_list, json_data, all_json)
 
                     _main_input_string = list_to_str(_main_input_list)
-                    
+
                     links_ratio = []
                     for i in all_json:
-                        links_ratio.append([i[0], string_similarity(i[1][0], _main_input_string), i[1][0], i[1][1]])
-                    
-                    df1 = pd.DataFrame(links_ratio, columns=['single_ratio', 'actual_ratio', 'name', 'path'])
+                        links_ratio.append([i[0], string_similarity(
+                            i[1][0], _main_input_string), i[1][0], i[1][1]])
+
+                    df1 = pd.DataFrame(links_ratio, columns=[
+                                       'single_ratio', 'actual_ratio', 'name', 'path'])
                     main_df = main_df.append(df1, ignore_index=True)
-        
+
         main_df = main_df.drop_duplicates(subset="path", keep="last")
-        top_df1 = main_df.sort_values('actual_ratio', ascending=False).head(5).values.tolist()
-        top_df1 = top_df1 = [i[3] if ".pdf" in i[3] else i[3] + ".aspx" for i in top_df1]
+        top_df1 = main_df.sort_values(
+            'actual_ratio', ascending=False).head(5).values.tolist()
+        top_df1 = top_df1 = [i[3] if ".pdf" in i[3]
+                             else i[3] + ".aspx" for i in top_df1]
 
         df1_str = ""
         for i in top_df1:
@@ -353,6 +379,7 @@ def get_response_from_watson(request):
     Log.objects.create(event_type_id=eid, user_email=user_email, user_ip=ip, event_question=text,
                        event_answer=message, intent=intents)
     return JsonResponse({'session_id': session_id_, 'answer': message, 'intent': intents})
+
 
 @csrf_exempt
 def login(request):
