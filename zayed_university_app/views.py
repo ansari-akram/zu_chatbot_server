@@ -210,12 +210,13 @@ def get_response_from_watson(request):
             print("----------", u_list)
             res = ' '.join([str(elem) for elem in u_list])
 
-    if res != text:
-        return JsonResponse({'session_id': session_id_, 'answer': f'{res}', 'intent': 'spell'})
+        if res != text:
+            return JsonResponse({'session_id': session_id_, 'answer': f'{res}', 'intent': 'spell'})
 
-    else:
-        text = res
-    return JsonResponse({'session_id': session_id_, 'answer': f'{spell(text)}', 'intent': 'spell'})
+        else:
+            text = res
+            
+    # return JsonResponse({'session_id': session_id_, 'answer': f'{spell(text)}', 'intent': 'spell'})
 
     doc = nlp(text.upper())
 
