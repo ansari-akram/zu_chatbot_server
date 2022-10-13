@@ -197,7 +197,7 @@ def get_response_from_watson(request):
     print('RIGHT SPELLING', spell(text),
           _data['spell_check_bool'], _data['spell_check_bool'] == True)
     if spell(text) != text and _data['spell_check_bool'] == True:
-        uncorrect = spell(text)
+        uncorrect = spell(text).lower()
         if "university" in uncorrect.lower():
             u_list = uncorrect.split()
             uni_pos = u_list.index("university")
@@ -210,11 +210,11 @@ def get_response_from_watson(request):
             print("----------", u_list)
             res = ' '.join([str(elem) for elem in u_list])
 
-        if res != text:
-            return JsonResponse({'session_id': session_id_, 'answer': f'{res}', 'intent': 'spell'})
+            if res.lower() != text.lower():
+                return JsonResponse({'session_id': session_id_, 'answer': f'{res}', 'intent': 'spell'})
 
-        else:
-            text = res
+            else:
+                text = res
             
     # return JsonResponse({'session_id': session_id_, 'answer': f'{spell(text)}', 'intent': 'spell'})
 
