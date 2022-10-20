@@ -1791,6 +1791,8 @@ def index(request):
 
             if i["report_name"] not in temp_list:
                 temp_list.append(i["report_name"])
+        
+        print("#################################################################SESSION", request.session)
 
         return render(request, 'home/index_admin.html', {'userlist': users_list, 'reports': temp_list,
                                                          'depts': departments,
