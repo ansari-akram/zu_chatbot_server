@@ -1797,8 +1797,8 @@ def index(request):
             print("session key value pair", key, value)
 
         return render(request, 'home/index_admin.html', {'userlist': users_list, 'reports': temp_list,
-                                                         'depts': departments,
-                                                         'depart_name': request.session['depart']})
+                                                         'depts': departments,})
+                                                        #  'depart_name': request.session['depart']})
 
     else:
 
