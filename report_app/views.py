@@ -1693,7 +1693,7 @@ def users(request):
         html += '<tr><td colspan=3>No Users Found</td></tr>'
         context = {
             'report_html': html,
-            'depart_name': request.session['depart']
+            # 'depart_name': request.session['depart']
         }
         return render(request, 'home/user_admin.html', context)
     else:
@@ -1725,7 +1725,7 @@ def users(request):
             'reports': temp_list,
             'user_list': users_list,
             'report_html': html,
-            'depart_name': request.session['depart']
+            # 'depart_name': request.session['depart']
         }
         return render(request, 'home/user_admin.html', context)
 
@@ -1812,7 +1812,9 @@ def index(request):
                 temp_list.append(i["report_name"])
 
         return render(request, 'home/user_adoreta.html',
-                      {'reports': temp_list, 'depart_name': request.session['depart']})
+                      {'reports': temp_list,
+                    #   'depart_name': request.session['depart']
+                      })
 
 
 @csrf_protect
