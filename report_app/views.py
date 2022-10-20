@@ -1793,6 +1793,8 @@ def index(request):
                 temp_list.append(i["report_name"])
         
         print("#################################################################SESSION", request.session)
+        for key, value in request.session.items():
+            print(key, value)
 
         return render(request, 'home/index_admin.html', {'userlist': users_list, 'reports': temp_list,
                                                          'depts': departments,
