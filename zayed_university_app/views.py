@@ -198,17 +198,34 @@ def get_response_from_watson(request):
           _data['spell_check_bool'], _data['spell_check_bool'] == True)
     if spell(text) != text and _data['spell_check_bool'] == True:
         uncorrect = spell(text).lower()
-        if "university" in uncorrect.lower():
+        if "university" in uncorrect or "university?" in uncorrect:
             u_list = uncorrect.split()
-            uni_pos = u_list.index("university")
-            print(u_list, uni_pos)
+            print("u_list--->", u_list)
             try:
-                if u_list[uni_pos-1] == "based":
-                    u_list[uni_pos-1] = "zayed"
+                uni_pos = u_list.index("university")
+            except:
+                uni_pos = u_list.index("university?")
+            print("u_list--->>>>>>", u_list, uni_pos)
+            try:
+                if u_list[uni_pos - 1] == "based":
+                    u_list[uni_pos - 1] = "zayed"
             except:
                 pass
             print("----------", u_list)
             res = ' '.join([str(elem) for elem in u_list])
+            print("checking...", res != text, res, text)
+            
+        # if "university" in uncorrect.lower():
+        #     u_list = uncorrect.split()
+        #     uni_pos = u_list.index("university")
+        #     print(u_list, uni_pos)
+        #     try:
+        #         if u_list[uni_pos-1] == "based":
+        #             u_list[uni_pos-1] = "zayed"
+        #     except:
+        #         pass
+        #     print("----------", u_list)
+        #     res = ' '.join([str(elem) for elem in u_list])
 
             if res.lower() != text.lower():
                 return JsonResponse({'session_id': session_id_, 'answer': f'{res}', 'intent': 'spell'})
