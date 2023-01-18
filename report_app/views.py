@@ -602,10 +602,10 @@ def reset_count():
 
         # print("reset_count", reset_count)
 
-        SQL_select_Query1 = 'Select * from dbo.monthly_reset_count;'
-        cursor1.execute(SQL_select_Query1)
+        reset_month = Log.objects.all().filter(user_datetime__month=datetime.now().month, event_type_id='7').count()
+#         cursor1.execute(SQL_select_Query1)
 
-        reset_month = cursor1.fetchall()
+#         reset_month = cursor1.fetchall()
 
         # print("reset_month", reset_month)
 
@@ -622,7 +622,7 @@ def reset_count():
 
             print("SQL connection is closed")
 
-    return len(reset_count), len(reset_month)
+    return len(reset_count), reset_month
 
 
 def get_total_users_cnt():
