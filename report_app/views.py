@@ -30,7 +30,7 @@ from zayed_university_app.models import Log
 from django.db.models import Count
 
 from django.shortcuts import render, HttpResponse
-from report_app.forms import UploadForm
+# from report_app.forms import UploadForm
 import xml.etree.ElementTree as ET
 from django.http import JsonResponse, QueryDict
 import os
@@ -2383,108 +2383,108 @@ def url_json_val(url):
 import shutil
 
 
-def validate_url(request):
-    global url_nm, result, ext_, url_path, get_tag, url
-    if request.method == 'POST':
-        url = request.POST.get('url')
-        get_tag = request.POST.getlist('tag_lst')
-        print(">>**", url)
-        print("****", get_tag)
-        result = ''
+# def validate_url(request):
+#     global url_nm, result, ext_, url_path, get_tag, url
+#     if request.method == 'POST':
+#         url = request.POST.get('url')
+#         get_tag = request.POST.getlist('tag_lst')
+#         print(">>**", url)
+#         print("****", get_tag)
+#         result = ''
 
-        ## fro file upload
-        form = UploadForm(request.POST, request.FILES)
-        if form.is_valid():
-            form.save()
+#         ## fro file upload
+#         form = UploadForm(request.POST, request.FILES)
+#         if form.is_valid():
+#             form.save()
 
-            # print("request.FILES - ", request.FILES['file'])
-            # print("type  ", type(request.FILES['file']))
+#             # print("request.FILES - ", request.FILES['file'])
+#             # print("type  ", type(request.FILES['file']))
 
-            ln = str(Upload.objects.last())
-            print(">>", ln)
-            ext_ = ln.split('.')[1]
-            if ext_ == 'xml':
-                print("xml file ", ln)
+#             ln = str(Upload.objects.last())
+#             print(">>", ln)
+#             ext_ = ln.split('.')[1]
+#             if ext_ == 'xml':
+#                 print("xml file ", ln)
 
-                try:
-                    parsefile('media/' + ln)
-                    tag_lst = fetch_xml_tag('media/' + ln)
-                    print("XML is well-formed", ln)
+#                 try:
+#                     parsefile('media/' + ln)
+#                     tag_lst = fetch_xml_tag('media/' + ln)
+#                     print("XML is well-formed", ln)
 
-                    context = {
-                        'color': "green",
-                        'msg': ln + '- is valid!',
-                        'tag_lst': tag_lst,
-                    }
-                    return render(request, 'home/upload.html', context)
+#                     context = {
+#                         'color': "green",
+#                         'msg': ln + '- is valid!',
+#                         'tag_lst': tag_lst,
+#                     }
+#                     return render(request, 'home/upload.html', context)
 
-                except:
-                    print("XML is NOT well-formed!", ln)
+#                 except:
+#                     print("XML is NOT well-formed!", ln)
 
-                    context = {
-                        'color': "red",
-                        'msg': ln + '- is invalid!',
+#                     context = {
+#                         'color': "red",
+#                         'msg': ln + '- is invalid!',
 
-                    }
-                    return render(request, 'home/upload.html', context)
+#                     }
+#                     return render(request, 'home/upload.html', context)
 
-            elif ext_ == 'json':
-                result, keys = parse_jsonfile('media/' + ln)
-                if result:
-                    context = {
-                        'tag_lst': keys,
-                        'color': 'green',
-                        'msg': ln + '- is valid!',
-                    }
-                    return render(request, 'home/upload.html', context)
-                else:
-                    context = {
-                        'color': 'red',
-                        'msg': ln + '- is invalid!',
-                    }
-                return render(request, 'home/upload.html', context)
+#             elif ext_ == 'json':
+#                 result, keys = parse_jsonfile('media/' + ln)
+#                 if result:
+#                     context = {
+#                         'tag_lst': keys,
+#                         'color': 'green',
+#                         'msg': ln + '- is valid!',
+#                     }
+#                     return render(request, 'home/upload.html', context)
+#                 else:
+#                     context = {
+#                         'color': 'red',
+#                         'msg': ln + '- is invalid!',
+#                     }
+#                 return render(request, 'home/upload.html', context)
 
-        if url:
-            ext_ = url.split('.')[-1]
+#         if url:
+#             ext_ = url.split('.')[-1]
 
-            if ext_ and url and ext_ == 'xml':
+#             if ext_ and url and ext_ == 'xml':
 
-                # os.remove('xml_files')
-                # os.mkdir('xml_files')
-                url, tag_lst = url_xml_val(url, 'xml_files')
-                context = {
-                    'color': "green",
-                    'msg': url + '- is valid!',
-                    'tag_lst': tag_lst,
-                    # 'msg1': 'from' + " " + url_nm + 'you have selected_tag(s)-' + " ".join(get_tag),
-                }
-                return render(request, 'home/upload.html', context)
+#                 # os.remove('xml_files')
+#                 # os.mkdir('xml_files')
+#                 url, tag_lst = url_xml_val(url, 'xml_files')
+#                 context = {
+#                     'color': "green",
+#                     'msg': url + '- is valid!',
+#                     'tag_lst': tag_lst,
+#                     # 'msg1': 'from' + " " + url_nm + 'you have selected_tag(s)-' + " ".join(get_tag),
+#                 }
+#                 return render(request, 'home/upload.html', context)
 
-            elif ext_ and url and ext_ == 'json':
+#             elif ext_ and url and ext_ == 'json':
 
-                result, jsonData, keys = url_json_val(url)
+#                 result, jsonData, keys = url_json_val(url)
 
-                context = {
-                    'tag_lst': keys,
-                    'color': 'green',
-                    'msg': url + '- is valid!',
-                }
-                return render(request, 'home/upload.html', context)
+#                 context = {
+#                     'tag_lst': keys,
+#                     'color': 'green',
+#                     'msg': url + '- is valid!',
+#                 }
+#                 return render(request, 'home/upload.html', context)
 
-        elif get_tag:
-            context = {
-                'color': "green",
-                'msg': 'you have selected a tag(s)-' + " ".join(get_tag),
-            }
-            return render(request, 'home/upload.html', context)
+#         elif get_tag:
+#             context = {
+#                 'color': "green",
+#                 'msg': 'you have selected a tag(s)-' + " ".join(get_tag),
+#             }
+#             return render(request, 'home/upload.html', context)
 
-        else:
-            form = UploadForm()
-            context = {
-                'color': "red",
-                'msg': str(url) + '- is invalid!',
-                'form': form,
-            }
-            return render(request, 'home/upload.html', context)
+#         else:
+#             form = UploadForm()
+#             context = {
+#                 'color': "red",
+#                 'msg': str(url) + '- is invalid!',
+#                 'form': form,
+#             }
+#             return render(request, 'home/upload.html', context)
 
-    return render(request, 'home/upload.html')
+#     return render(request, 'home/upload.html')
